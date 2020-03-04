@@ -31,6 +31,19 @@ jobs:
                 docker push $IMAGE_NAME:latest
                 docker push $IMAGE_NAME:$IMAGE_TAG
 
+  deploy:
+    docker:
+      - image: hashicorp/terraform
+    working_directory: ./terraform
+    steps:
+      - checkout
+      - run:
+          name: tf init
+          command: terraform init
+      - run:
+          name: tf apply after determining the correct image version
+          command: TF_VAR_image_version=${CIRCLE_TAG/v/''} terraform apply -auto-approve -input=false
+
 workflows:
   version: 2
   build_publish:
@@ -42,6 +55,14 @@ workflows:
       - publish:
           requires:
             - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - deploy:
+          requires:
+            - publish
           filters:
             tags:
               only: /^v.*/
