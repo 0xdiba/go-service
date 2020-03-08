@@ -1,6 +1,6 @@
 resource "aws_ecs_task_definition" "go-svc-tdef" {
   family                = "go-svc-tdef"
-  container_definitions = templatefile("container_def.json", {image_version=var.image_version, task_role=var.task_role})
+  container_definitions = templatefile("container_def.json", { image_version = var.image_version, task_role = var.task_role })
 }
 
 resource "aws_ecs_service" "go-svc" {
