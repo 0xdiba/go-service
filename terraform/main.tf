@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "go-svc-tdef" {
 }
 
 resource "aws_ecs_service" "go-svc" {
-  name            = "go-svc-tf"
+  name            = format("go-svc-tf-%s", formatdate("DDMMYYHHmmss", timestamp()))
   cluster         = var.cluster_name
   task_definition = aws_ecs_task_definition.go-svc-tdef.arn
   desired_count   = 1
