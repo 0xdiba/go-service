@@ -33,7 +33,7 @@ jobs:
 
   deploy:
     docker:
-      - image: hashicorp/terraform
+            - image: hashicorp/terraform:0.12.20
     steps:
       - checkout
       - run:
